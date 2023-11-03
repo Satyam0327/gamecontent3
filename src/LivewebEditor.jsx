@@ -8,7 +8,7 @@ function LiveWebEditor() {
   const [j, setJ] = useState(0);
   const [iframeContent, setIframeContent] = useState('');
 
-  const update = () => {
+  const updateIframe = () => {
     const text = htmlCode + '<style>' + cssCode + '</style>' + '<script>' + jsCode + '</script>';
     setIframeContent(text);
   };
@@ -21,12 +21,21 @@ function LiveWebEditor() {
       const closeChar = closeChars.get(char);
       if (closeChar) {
         val.splice(pos, 0, closeChar);
-        event.target.value = val.join('');
+
+        // Update the state variable based on the code type
+        if (codeType === 'html') {
+          setHtmlCode(val.join(''));
+        } else if (codeType === 'css') {
+          setCssCode(val.join(''));
+        } else if (codeType === 'js') {
+          setJsCode(val.join(''));
+        }
+
+        // Update the selection position
         event.target.selectionEnd = pos;
       }
     }
     setJ(0);
-    update();
   };
 
   const saveFile = () => {
@@ -38,6 +47,10 @@ function LiveWebEditor() {
     } else {
       alert('Please fill all the fields');
     }
+  };
+
+  const runCode = () => {
+    updateIframe();
   };
 
   const download = (data, filename, type) => {
@@ -65,44 +78,47 @@ function LiveWebEditor() {
 
   return (
     <div className="split-container">
-      <div className="code-editor">
-        <div className="container">
-          <button id="btn" onClick={saveFile}>
-            Save File
-          </button>
-          <textarea
-            id="htmlCode"
-            placeholder="Type HTML code here"
-            spellCheck="false"
-            value={htmlCode}
-            onChange={(e) => {
-              handleCodeChange('html', e);
-              setHtmlCode(e.target.value);
-            }}
-          ></textarea>
-          <textarea
-            id="cssCode"
-            placeholder="Type CSS code here"
-            spellCheck="false"
-            value={cssCode}
-            onChange={(e) => {
-              handleCodeChange('css', e);
-              setCssCode(e.target.value);
-            }}
-          ></textarea>
-          <textarea
-            id="javascriptCode"
-            placeholder="Type JavaScript code here"
-            spellCheck="false"
-            value={jsCode}
-            onChange={(e) => {
-              handleCodeChange('js', e);
-              setJsCode(e.target.value);
-            }}
-          ></textarea>
-        </div>
+      <div className="container">
+        <button id="btn" onClick={saveFile}>
+          Save File
+        </button>
+        <button id="runBtn" onClick={runCode}>
+          Run
+        </button>
+        <textarea
+          id="htmlCode"
+          placeholder="Type HTML code here"
+          spellCheck="false"
+          value={htmlCode}
+          onChange={(e) => {
+            handleCodeChange('html', e);
+            setHtmlCode(e.target.value);
+          }}
+        ></textarea>
+        <textarea
+          id="cssCode"
+          placeholder="Type CSS code here"
+          spellCheck="false"
+          value={cssCode}
+          onChange={(e) => {
+            handleCodeChange('css', e);
+            setCssCode(e.target.value);
+          }}
+        ></textarea>
+        <textarea
+          id="javascriptCode"
+          placeholder="Type JavaScript code here"
+          spellCheck="false"
+          value={jsCode}
+          onChange={(e) => {
+            handleCodeChange('js', e);
+            setJsCode(e.target.value);
+          }}
+        ></textarea>
       </div>
+
       <div className="iframe-container">
+        <h1>Here is your output...</h1>
         <iframe id="viewer" srcDoc={iframeContent}></iframe>
       </div>
     </div>
