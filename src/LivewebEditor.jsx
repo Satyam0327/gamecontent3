@@ -21,8 +21,6 @@ function LiveWebEditor() {
       const closeChar = closeChars.get(char);
       if (closeChar) {
         val.splice(pos, 0, closeChar);
-
-        // Update the state variable based on the code type
         if (codeType === 'html') {
           setHtmlCode(val.join(''));
         } else if (codeType === 'css') {
@@ -86,35 +84,38 @@ function LiveWebEditor() {
           Run
         </button>
         <textarea
-          id="htmlCode"
-          placeholder="Type HTML code here"
-          spellCheck="false"
-          value={htmlCode}
-          onChange={(e) => {
-            handleCodeChange('html', e);
-            setHtmlCode(e.target.value);
-          }}
-        ></textarea>
-        <textarea
-          id="cssCode"
-          placeholder="Type CSS code here"
-          spellCheck="false"
-          value={cssCode}
-          onChange={(e) => {
-            handleCodeChange('css', e);
-            setCssCode(e.target.value);
-          }}
-        ></textarea>
-        <textarea
-          id="javascriptCode"
-          placeholder="Type JavaScript code here"
-          spellCheck="false"
-          value={jsCode}
-          onChange={(e) => {
-            handleCodeChange('js', e);
-            setJsCode(e.target.value);
-          }}
-        ></textarea>
+  id="htmlCode"
+  className="code-textarea"
+  placeholder="Type HTML code here"
+  spellCheck="false"
+  value={htmlCode}
+  onChange={(e) => {
+    handleCodeChange('html', e);
+    setHtmlCode(e.target.value);
+  }}
+></textarea>
+<textarea
+  id="cssCode"
+  className="code-textarea"
+  placeholder="Type CSS code here"
+  spellCheck="false"
+  value={cssCode}
+  onChange={(e) => {
+    handleCodeChange('css', e);
+    setCssCode(e.target.value);
+  }}
+></textarea>
+<textarea
+  id="javascriptCode"
+  className="code-textarea"
+  placeholder="Type JavaScript code here"
+  spellCheck="false"
+  value={jsCode}
+  onChange={(e) => {
+    handleCodeChange('js', e);
+    setJsCode(e.target.value);
+  }}
+></textarea>
       </div>
 
       <div className="iframe-container">
